@@ -11,17 +11,19 @@ function App(props) {
   const [finished, setFinished] = useState(false);
   const [currentQuiz, setCurrentQuiz] = useState(0);
   const [quizzes, setQuizzes] = useState([...Myquizzes]);
+
   const [answers, setAnswers] = useState([]);
 
   let firstQ = currentQuiz === 0;
   let lastQ = currentQuiz === quizzes.length-1;
 
-  /*const download = async () => {
+  const download = async () => {
 
     const res = await fetch('https://core.dit.upm.es/api/quizzes/random10wa?token=eb51f6091799a0f8dbac');
-    let downloadedQuizzes = res.json();
-    setQuizzes(...downloadedQuizzes);
-  }*/
+    let downloadedQuizzes = await res.json();
+    console.log(downloadedQuizzes);
+    setQuizzes([...downloadedQuizzes]);
+ }
 
   const next = () => {
     setCurrentQuiz(lastQ ? currentQuiz : currentQuiz + 1);
@@ -44,7 +46,7 @@ function App(props) {
     //solución fácil, hacer un bucle for ==> intentar hacer una solución más óptima 
     console.log(soluciones);
     console.log(respuestas);
-    for(let i=0;i <quizzes.length;i++){
+    for(let i=0;i <=quizzes.length;i++){
       let check = soluciones[i]===respuestas[i];
       check ? setScore(score++) : setScore(score);
       console.log(check);
@@ -53,7 +55,7 @@ function App(props) {
     setFinished(true);
   }
 
- /* useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       try {
         await download();
@@ -62,7 +64,7 @@ function App(props) {
       }
     }
     fetchData();
-  }, []);*/
+  }, []);
 
   return (
   finished ? <div className='App'>  <Finished finished = {finished} score = {score}/></div> :  <div className="App">
@@ -72,7 +74,6 @@ function App(props) {
     previous = {previous}
     next = {next}
     submit = {submit}
-    finished = {finished}
   />
 
   </div>
@@ -80,4 +81,3 @@ function App(props) {
   }
   
 export default App;
-
